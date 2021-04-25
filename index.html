@@ -6,78 +6,91 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>tawindcss jit + alpine.js + vite</title>
   </head>
-  <body
-    class="antialiased"
-    x-data="{
-      disabled: true,
-      show: false,
-      text: 'message',
-      handleInit() {
-        console.log(this.text)
-        console.log(this.$refs.button.disabled)
-        this.$nextTick(() => { console.log(this.$refs.button.disabled) });
-      },
-    }"
-    x-init="handleInit()"
-  >
-    <form x-ref="form" class="flex flex-col items-center space-y-4">
-      <h1 class="mt-12 text-6xl text-[#0f0]">
-        Hello, Vite Alpine.js Tawindcss!
-      </h1>
-      <button
-        class="px-6 py-3 border border-gray-300 rounded cursor-pointer focus:border-blue-300 hover:border-blue-300 focus:hover:text-red-500 focus:outline-none disabled:cursor-not-allowed hover:disabled:border-red-300"
-        :disabled="disabled"
-        x-ref="button"
-        type="button"
+  <body class="antialiased">
+    <header class="mt-[46px] text-6xl text-[#0f0] text-center">
+      Hello, Vite Alpine.js Tawindcss!
+    </header>
+    <main class="mt-[46px]">
+      <form
+        x-data="formData()"
+        x-init="handleInit()"
+        class="flex flex-col items-center space-y-[18px]"
+        x-cloak
       >
-        button
-      </button>
-      <button
-        class="px-6 py-3 border focus:outline-none"
-        @click="
-          disabled = !disabled;
-          $refs.button.focus();
-          $refs.disabled.checked = disabled;
-          $refs.enabled.checked = !disabled;
-        "
-        type="button"
-      >
-        switch
-      </button>
-      <div class="flex items-center space-x-2">
-        <label for="disabled">disabled</label>
-        <input
-          type="radio"
-          name="disabled"
-          id="disabled"
-          :value="true"
-          x-ref="disabled"
-          :checked="disabled"
-        />
-        <label for="enabled">enabled</label>
-        <input
-          type="radio"
-          name="disabled"
-          id="enabled"
-          :value="false"
-          x-ref="enabled"
-          :checked="!disabled"
-        />
-      </div>
-      <button class="px-6 py-3 border" @click="show = !show" type="button">
-        showMsg
-      </button>
-      <div
-        x-text="text"
-        x-show="show"
-        x-transition:enter="transition ease-out duration-300"
-        x-transition:enter-start="opacity-0 transform scale-90"
-        x-transition:enter-end="opacity-100 transform scale-100"
-        x-transition:leave="transition ease-in duration-300"
-        x-transition:leave-start="opacity-100 transform scale-100"
-        x-transition:leave-end="opacity-0 transform scale-90"
-      ></div>
-    </form>
+        <button
+          class="px-6 py-3 border border-gray-300 rounded cursor-pointer focus:border-blue-300 hover:border-green-300 focus:hover:text-red-500 focus:outline-none disabled:cursor-not-allowed hover:disabled:border-red-300"
+          :disabled="disabled"
+          x-ref="button"
+          type="button"
+        >
+          button
+        </button>
+        <button
+          class="px-6 py-3 border focus:outline-none"
+          @click="handleDisabled()"
+          type="button"
+        >
+          switch
+        </button>
+        <div class="flex items-center space-x-2">
+          <label for="disabled">disabled</label>
+          <input
+            type="radio"
+            name="disabled"
+            id="disabled"
+            :value="true"
+            x-ref="disabled"
+            :checked="disabled"
+          />
+          <label for="enabled">enabled</label>
+          <input
+            type="radio"
+            name="disabled"
+            id="enabled"
+            :value="false"
+            x-ref="enabled"
+            :checked="!disabled"
+          />
+        </div>
+        <tw-btn
+          text="say hello?"
+          size="sm"
+          @click="$dispatch('say-hello', { text: 'hello tw-btn!' })"
+        >
+        </tw-btn>
+        <button
+          class="px-6 py-3 border"
+          @click="$dispatch('show-notify', {
+            show: true,
+            title: 'Hello!',
+            body:'Tailwind CSS Alpine.js Vite.js'
+          })"
+          type="button"
+        >
+          showNotify
+        </button>
+        <button
+          class="px-6 py-3 border"
+          @click="showMsg = !showMsg"
+          type="button"
+        >
+          showMsg
+        </button>
+        <div
+          x-text="text"
+          x-show="showMsg"
+          x-transition:enter="transition ease-out duration-300"
+          x-transition:enter-start="opacity-0 transform scale-90"
+          x-transition:enter-end="opacity-100 transform scale-100"
+          x-transition:leave="transition ease-in duration-300"
+          x-transition:leave-start="opacity-100 transform scale-100"
+          x-transition:leave-end="opacity-0 transform scale-90"
+        ></div>
+      </form>
+    </main>
+    <tw-notifications></tw-notifications>
     <script type="module" src="/src/main.js"></script>
+    <script type="module" src="/src/button.js"></script>
+    <script type="module" src="/src/notifications.js"></script>
   </body>
 </html>
